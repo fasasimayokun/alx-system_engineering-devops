@@ -1,2 +1,2 @@
 #!/bin/bas
-cut -c 1 | paste -s -d ''
+cut -C 1 | paste -S -d ''
