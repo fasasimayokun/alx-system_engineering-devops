@@ -41,7 +41,7 @@ frontend maykayalx-tech-frontend
 backend maykayalx-tech-backend
     balance roundrobin
     server 145751-web-01 54.157.157.93:80 check
-    server 145751-web-02 54.198.68.237:80 check
+    server 145751-web-02 54.167.173.197:80 check
 "
 
 # shellcheck disable=SC2154
