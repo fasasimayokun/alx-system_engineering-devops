@@ -8,8 +8,6 @@ import sys
 
 
 if __name__ == '__main__':
-    path = "https://jsonplaceholder.typicode.com/"
-
     user_ID = sys.argv[1]
 
     path = "https://jsonplaceholder.typicode.com/users/" + user_ID
