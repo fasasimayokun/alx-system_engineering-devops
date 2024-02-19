@@ -24,8 +24,8 @@ if __name__ == '__main__':
         if todos.get("completed") is True:
             completed.append(todos.get("title"))
 
-    print("Employee {} is done with tasks({}/{})".format(user.get("name"),
-                                                       len(completed),
-                                                       len(todos_dict)))
+    print("Employee {} is done with tasks({}/{}):".format(user.get("name"),
+                                                          len(completed),
+                                                          len(todos_dict)))
     for complete in completed:
         print("\t {}".format(complete))

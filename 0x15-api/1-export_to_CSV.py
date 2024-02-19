@@ -8,21 +8,21 @@ import sys
 
 
 if __name__ == '__main__':
-    path = "https://jsonplaceholder.typicode.com/"
-
     user_ID = sys.argv[1]
 
-    user_resp = requests.get(path + "users/{}".format(user_ID))
+    path = "https://jsonplaceholder.typicode.com/users/" + user_ID
+
+    user_resp = requests.get(path)
     user = user_resp.json()
 
     username = user.get("username")
 
-    param = {"userId": user_ID}
-    todos_resp = requests.get(path + "todos", params=param)
+    # param = {"userId": user_ID}
+    todos_resp = requests.get(path + "/todos")
 
     todos_dict = todos_resp.json()
 
-    with open("{}.csv".format(user_ID), "w", newline="") as csv_file:
+    with open("{}.csv".format(user_ID), "w") as csv_file:
         writer = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
 
         for todos in todos_dict:

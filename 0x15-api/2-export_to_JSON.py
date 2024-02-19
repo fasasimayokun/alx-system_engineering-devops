@@ -12,14 +12,16 @@ if __name__ == '__main__':
 
     user_ID = sys.argv[1]
 
-    user_resp = requests.get(path + "users/{}".format(user_ID))
+    path = "https://jsonplaceholder.typicode.com/users/" + user_ID
+
+    user_resp = requests.get(path)
     user = user_resp.json()
     username = user.get("username")
 
     data_to_expt = {user_ID: []}
 
-    param = {"userId": user_ID}
-    todos_resp = requests.get(path + "todos", params=param)
+    # param = {"userId": user_ID}
+    todos_resp = requests.get(path + "/todos")
     todos_dict = todos_resp.json()
 
     for todos in todos_dict:
