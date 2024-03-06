@@ -4,42 +4,41 @@ all hot articles, and prints a sorted count of given keywords
 (case-insensitive, delimited by spaces. Javascript should
 count as javascript, but java should not)."""
 import requests
+from collections import Counter
 
 
 def count_words(subreddit, word_list, instances={}, after="", count=0):
     """a func that parses the title of all hot articles"""
+    return count_word_helper(
+        subreddit=subreddit,
+        word_list=word_list,
+        after=None,
+        word_counts=None
+    )
+
+
+def count_word_helper(subreddit, word_list, after, word_counts):
+    """An util for the count_words function"""
+    if word_counts is None:
+        word_counts = Counter()
     url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
-    headers = {"User-Agent": "Api_advanced/v1.0.0 (by /u/maykay_jr)"}
-    params = {"after": after, "count": count, "limit": 100}
-    response = requests.get(url, headers=headers, params=params,
-                            allow_redirects=False)
-
-    try:
-        res = response.json()
-        if response.status_code == 404:
-            raise Exception
-    except Exception:
-        print('')
-        return
-
-    res = res.get("data")
-    after = res.get("after")
-    count += res.get("dist")
-    for ch in res.get("children"):
-        title = ch.get("data").get("title").lower().split()
-        for word in word_list:
-            if word.lower() in title:
-                times = lent([tl for tl in title if tl == word.lower()])
-                if instances.get(word) is None:
-                    instances[word] = times
-                else:
-                    instances[word] += times
-
-    if after is None:
-        if len(instances) == 0:
-            print('')
-            return
-        instances = sorted(instances.items(), key=lambda ky: (-ky[1], ky[0]))
-        [print("{}: {}".format(k, v)) for k, v in instances]
+    params = {"limit": 100, "after": after}
+    response = requests.get(
+        url, headers={"User-agent": "MyApiAdvanced/1.0"}, params=params)
+    if response.status_code == 200:
+        data = response.json()
+        posts = data.get("data").get("children")
+        for post in posts:
+            title = post.get("data").get("title").lower()
+            for word in word_list:
+                word_counts[word.lower()] += title.count(word.lower())
+        after = data.get("data").get("after")
+        if after:
+            return count_word_util(subreddit, word_list, after, word_counts)
+        else:
+            sorted_counts = sorted(word_counts.items(),
+                                   key=lambda xy: (-xy[1], xy[0]))
+            for word, count in sorted_counts:
+                print(f"{word}: {count}")
     else:
-        count_words(subreddit, word_list, instances, after, count)
+        return None
