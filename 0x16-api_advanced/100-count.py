@@ -7,7 +7,7 @@ import requests
 from collections import Counter
 
 
-def count_words(subreddit, word_list, instances={}, after="", count=0):
+def count_words(subreddit, word_list):
     """a func that parses the title of all hot articles"""
     return count_word_helper(
         subreddit=subreddit,
