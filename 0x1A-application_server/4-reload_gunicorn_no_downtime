@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# a script for no service interruption
+kill -s HUP "$(pgrep gunicorn)"
